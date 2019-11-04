@@ -14,7 +14,7 @@ export default class Search extends React.Component {
             return;
         }
 
-        fetch('http://localhost:5551/search', {
+        fetch('/api/v1/search', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -31,7 +31,7 @@ export default class Search extends React.Component {
     };
 
     handleSearch = (value) => {
-        return fetch('http://localhost:5551/search_similar', {
+        return fetch('/api/v1/search_similar', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -9,7 +9,7 @@ export default class Add extends React.Component {
     }
 
     handleSubmit = () => {
-        fetch('http://localhost:5551/add', {
+        fetch('/api/v1/add', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',

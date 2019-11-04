@@ -16,7 +16,7 @@ export default class Analysis extends React.Component {
     }
 
     handleSubmit = () => {
-        fetch('http://localhost:5551/analyse', {
+        fetch('/api/v1/analyse', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
