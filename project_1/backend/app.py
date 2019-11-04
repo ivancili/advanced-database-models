@@ -4,19 +4,17 @@ import datetime
 from flask import Flask
 from flask import make_response
 from flask import request
-from flask_cors import CORS
 from utils import build_analysis_query
 from utils import build_search_query
 from utils import get_database_ref
 
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 database_cursor = None
 database_connection = None
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/api/v1/add', methods=['POST'])
 def add():
     data = request.json
 
@@ -32,7 +30,7 @@ def add():
     return make_response({'status_text': 'success'}, 200)
 
 
-@app.route('/search', methods=['POST'])
+@app.route('/api/v1/search', methods=['POST'])
 def search():
     query = request.json.get('query')
     logical_op = request.json.get('logical_op')
@@ -57,7 +55,7 @@ def search():
     return make_response({'sql': search_query, 'rows': rows, 'status_text': 'success'}, 200)
 
 
-@app.route('/search_similar', methods=['POST'])
+@app.route('/api/v1/search_similar', methods=['POST'])
 def search_similar():
     query = request.json.get('partial_query')
     query = query.split(' ')[-1]
@@ -85,7 +83,7 @@ def search_similar():
     )
 
 
-@app.route('/analyse', methods=['POST'])
+@app.route('/api/v1/analyse', methods=['POST'])
 def analyse():
     start_date = request.json.get('startDate')
     end_date = request.json.get('endDate')
