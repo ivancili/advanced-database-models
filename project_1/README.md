@@ -11,5 +11,5 @@ Technologies:
 To run the app:
 
 1. Run the containers using `docker-compose up --build -d`
-2. App is running on [http://localhost:5552/](http://localhost:5552/)
-3. pgAdmin4 can be accessed on [http://localhost:5553](http://localhost:5553)
+2. App is running on **http://localhost:80/**
+3. pgAdmin4 can be accessed on **http://localhost:5000**
