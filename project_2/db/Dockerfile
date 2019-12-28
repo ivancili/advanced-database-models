@@ -1,3 +1,3 @@
-FROM mongo:3.4.23-xenial
+FROM mongo:4.2.2-bionic
 
 COPY ./resources /docker-entrypoint-initdb.d/
