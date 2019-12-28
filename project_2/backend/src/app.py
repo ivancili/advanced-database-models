@@ -12,10 +12,10 @@ from utils import get_mongo_client
 app = Flask(__name__)
 
 
-@app.route('/api/v1/comments')
-def _get_comments():
-    article = request.args.get('article')
-
+@app.route('/api/v1/comments/<article>')
+def _get_comments(
+        article: str,
+):
     with get_mongo_client() as client:
         data = client.nmbp.comments.find_one(
             {'_id': article},
@@ -24,7 +24,7 @@ def _get_comments():
 
         return make_response(
             jsonify({
-                '_id': article,
+                'article': article,
                 'comments': data['comments'] if data else [],
             })
         )
@@ -82,7 +82,8 @@ def _get_articles(
                     client.nmbp.news.aggregate([
                         {'$match': query},
                         {'$project': {
-                            '_id': {'$toString': '$_id'},
+                            '_id': 0,
+                            'article': {'$toString': '$_id'},
                             'title': 1,
                             'author': 1,
                             'content': 1,
