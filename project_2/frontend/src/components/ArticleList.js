@@ -1,6 +1,6 @@
 import React from 'react';
 import Article from "./Article";
-import {List} from 'semantic-ui-react';
+import {Item} from 'semantic-ui-react';
 
 class ArticleList extends React.Component {
 
@@ -29,15 +29,13 @@ class ArticleList extends React.Component {
 
     render() {
         const articleList = this.state.articles.map((article, i) =>
-            <List.Item>
-                <Article key={i} data={article}/>
-            </List.Item>
+            <Article key={i} data={article}/>
         );
 
         return (
-            <List divided verticalAlign='middle'>
+            <Item.Group>
                 {articleList}
-            </List>
+            </Item.Group>
         )
     }
 
