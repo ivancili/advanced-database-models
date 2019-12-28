@@ -1,5 +1,6 @@
 import datetime
 import random
+import sys
 from typing import Optional
 
 from flask import Flask
@@ -32,8 +33,8 @@ def _get_comments(
 
 @app.route('/api/v1/comment', methods=['POST'])
 def _post_comment():
-    article = request.args.get('article')
-    comment = request.args.get('comment')
+    article = request.json.get('article')
+    comment = request.json.get('comment')
 
     with get_mongo_client() as client:
         if client.nmbp.comments.find({'_id': article}).count() > 0:
