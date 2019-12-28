@@ -1,8 +1,6 @@
 import datetime
-import json
 from typing import Optional
 
-from bson.json_util import dumps
 from flask import Flask
 from flask import jsonify
 from flask import make_response
@@ -18,12 +16,16 @@ def _get_comments():
     article = request.args.get('article')
 
     with get_mongo_client() as client:
-        data = json.loads(dumps(
-            client.nmbp.comments.find_one({'_id': article})
-        ))
+        data = client.nmbp.comments.find_one(
+            {'_id': article},
+            {'_id': 0, 'comments': 1}
+        )
 
         return make_response(
-            jsonify({'comments': data['comments'] if data else []})
+            jsonify({
+                '_id': article,
+                'comments': data['comments'] if data else [],
+            })
         )
 
 
@@ -36,12 +38,21 @@ def _post_comment():
         if client.nmbp.comments.find({'_id': article}).count() > 0:
             client.nmbp.comments.update(
                 {'_id': article},
-                {'$push': {'comments': comment}}
+                {'$push': {
+                    'comments': {
+                        'comment': comment,
+                        'date': datetime.datetime.now()
+                    }
+                }}
             )
         else:
-            client.nmbp.comments.save(
-                {'_id': article, 'comments': [comment]}
-            )
+            client.nmbp.comments.save({
+                '_id': article,
+                'comments': [{
+                    'comment': comment,
+                    'date': datetime.datetime.now()
+                }]
+            })
 
         return make_response(
             jsonify({
