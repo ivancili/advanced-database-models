@@ -123,20 +123,19 @@ def _map_reduce_a():
 @app.route('/api/v1/map_reduce/b')
 def _map_reduce_b():
     with get_mongo_client() as client:
-        _map_fn, _reduce_fn, _finalize_fn = get_map_reduce_fns('b')
+        _map_fn, _reduce_fn, _ = get_map_reduce_fns('b')
 
         collection = client.nmbp.comments.map_reduce(
             map=_map_fn,
             reduce=_reduce_fn,
-            finalize=_finalize_fn,
             out='map_reduced',
         )
 
-        return make_response(
-            jsonify(list(
-                collection.find()
-            ))
-        )
+        obj = collection.find_one()
+        num_articles = client.nmbp.news.count()
+        obj['frequency'] = obj['value'] / num_articles
+
+        return make_response(jsonify(obj))
 
 
 @app.route('/api/v1/map_reduce/c')
