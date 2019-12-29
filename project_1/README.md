@@ -4,12 +4,13 @@ The goal was to learn text search methods offered by PostgreSQL, and table pivot
 
 Technologies:
 
-- ReactJS on frontend
-- Flask on backend
-- PostgreSQL database is used to save textual data.
+- Javascript (ReactJS) on frontend
+- Python (Flask) on backend
+- PostgreSQL database is used to save textual data
+- Nginx as a reverse proxy
 
 To run the app:
 
 1. Run the containers using `docker-compose up --build -d`
-2. App is running on **http://localhost:80/**
+2. App is running on **http://localhost**
 3. pgAdmin4 can be accessed on **http://localhost:5000**
