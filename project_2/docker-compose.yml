@@ -28,7 +28,5 @@ services:
       - ./frontend:/app
       - /app/node_modules
     restart: on-failure
-    ports:
-      - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
