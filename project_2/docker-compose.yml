@@ -28,5 +28,3 @@ services:
       - ./frontend:/app
       - /app/node_modules
     restart: on-failure
-    environment:
-      - CHOKIDAR_USEPOLLING=true
