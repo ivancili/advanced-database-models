@@ -1,6 +1,5 @@
 import datetime
 import random
-import sys
 from typing import Optional
 
 from flask import Flask
@@ -8,6 +7,7 @@ from flask import jsonify
 from flask import make_response
 from flask import request
 
+from utils import get_map_reduce_fns
 from utils import get_mongo_client
 
 app = Flask(__name__)
@@ -98,6 +98,64 @@ def _get_articles(
                     ])
                 ))
             )
+        )
+
+
+@app.route('/api/v1/map_reduce/a')
+def _map_reduce_a():
+    with get_mongo_client() as client:
+        _map_fn, _reduce_fn, _finalize_fn = get_map_reduce_fns('a')
+
+        collection = client.nmbp.comments.map_reduce(
+            map=_map_fn,
+            reduce=_reduce_fn,
+            finalize=_finalize_fn,
+            out='map_reduced',
+        )
+
+        return make_response(
+            jsonify(list(
+                collection.find()
+            ))
+        )
+
+
+@app.route('/api/v1/map_reduce/b')
+def _map_reduce_b():
+    with get_mongo_client() as client:
+        _map_fn, _reduce_fn, _finalize_fn = get_map_reduce_fns('b')
+
+        collection = client.nmbp.comments.map_reduce(
+            map=_map_fn,
+            reduce=_reduce_fn,
+            finalize=_finalize_fn,
+            out='map_reduced',
+        )
+
+        return make_response(
+            jsonify(list(
+                collection.find()
+            ))
+        )
+
+
+@app.route('/api/v1/map_reduce/c')
+def _map_reduce_c():
+    with get_mongo_client() as client:
+        _map_fn, _reduce_fn, _finalize_fn = get_map_reduce_fns('c')
+
+        collection = client.nmbp.news.map_reduce(
+            map=_map_fn,
+            reduce=_reduce_fn,
+            finalize=_finalize_fn,
+            out='map_reduced',
+            limit=500,
+        )
+
+        return make_response(
+            jsonify(list(
+                collection.find()
+            ))
         )
 
 
