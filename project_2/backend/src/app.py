@@ -1,12 +1,10 @@
 import datetime
-import random
 from typing import Optional
 
 from flask import Flask
 from flask import jsonify
 from flask import make_response
 from flask import request
-
 from utils import get_map_reduce_fns
 from utils import get_mongo_client
 
@@ -69,17 +67,12 @@ def _post_comment():
 def _get_articles(
         number_of_articles: Optional[int] = 10,
 ):
-    def _add_fake_image(entry):
-        entry['image_url'] = f'https://picsum.photos/id/{random.randint(1, 1000)}/200/200'
-        return entry
-
     with get_mongo_client() as client:
         query = {'date': {'$lt': datetime.datetime.now()}}
 
         return make_response(
             jsonify(
-                list(map(
-                    _add_fake_image,
+                list(
                     client.nmbp.news.aggregate([
                         {'$match': query},
                         {'$project': {
@@ -88,6 +81,7 @@ def _get_articles(
                             'title': 1,
                             'author': 1,
                             'content': 1,
+                            'image_url': 1,
                             'date': {
                                 '$dateToString': {
                                     'date': '$date'
@@ -96,7 +90,7 @@ def _get_articles(
                         }},
                         {'$limit': number_of_articles}
                     ])
-                ))
+                )
             )
         )
 

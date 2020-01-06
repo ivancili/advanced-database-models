@@ -22,5 +22,12 @@ mongo \
   -u $MONGO_INITDB_ROOT_USERNAME \
   -p $MONGO_INITDB_ROOT_PASSWORD \
   --authenticationDatabase admin \
+  --eval 'db.news.find().forEach(function(doc){ db.news.update({"_id":doc._id},{$set: {"image_url": "https://picsum.photos/seed/" + doc._id + "/250"}}); })' \
+  nmbp
+
+mongo \
+  -u $MONGO_INITDB_ROOT_USERNAME \
+  -p $MONGO_INITDB_ROOT_PASSWORD \
+  --authenticationDatabase admin \
   --eval 'db.news.createIndex({date: -1})' \
   nmbp
