@@ -22,7 +22,7 @@ mongo \
   -u $MONGO_INITDB_ROOT_USERNAME \
   -p $MONGO_INITDB_ROOT_PASSWORD \
   --authenticationDatabase admin \
-  --eval 'db.news.find().forEach(function(doc){ db.news.update({"_id":doc._id},{$set: {"image_url": "https://picsum.photos/seed/" + doc._id + "/300"}}); })' \
+  --eval 'db.news.find().forEach(function(article){ db.news.update({"_id": article._id},{$set: {"image_url": "https://picsum.photos/seed/" + article._id + "/300"}}); })' \
   nmbp
 
 mongo \
